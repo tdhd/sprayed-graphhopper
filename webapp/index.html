@@ -1,0 +1,127 @@
+
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Simple Polylines</title>
+    <style>
+      html, body, #map-canvas {
+        height: 500px;
+        width: 500px;
+        margin: 0px;
+        padding: 0px
+      }
+    </style>
+<style>
+  #legend {
+    background: white;
+    padding: 10px;
+  }
+</style>
+
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&signed_in=true"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+    <script type="text/javascript">
+
+$.ajax({
+  dataType: "json",
+  url: "http://127.0.0.1:8080/route?callback=?",
+  success: function(data) {
+    alert(data);
+  },
+  error: function(xhr, textStatus, err) {
+        alert(textStatus);
+        alert(err);
+        alert("readyState: "+xhr.readyState+"\n xhrStatus: "+xhr.status);
+        alert("responseText: "+xhr.responseText);
+  }
+});
+
+/*
+$.getJSON( "http://127.0.0.1:8080/route?callback=?", function( data ) {
+  alert("123");
+  var items = [];
+  $.each( data, function( key, val ) {
+    items.push( "<li id='" + key + "'>" + val + "</li>" );
+  });
+ 
+  $( "<ul/>", {
+    "class": "my-new-list",
+    html: items.join( "" )
+  }).appendTo( "body" );
+});
+*/
+    </script>
+    <script>
+
+function initialize() {
+  var mapOptions = {
+    zoom: 3,
+    center: new google.maps.LatLng(53, 12),
+    mapTypeId: google.maps.MapTypeId.ROADMAP,
+    streetViewControl: false,
+    disableDefaultUI: true,   //disables controls
+    zoomControl: true        //zoom control enables
+  };
+
+  var map = new google.maps.Map(document.getElementById('map-canvas'),
+      mapOptions);
+
+//map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(
+//  document.getElementById('legend'));
+
+//var legend = document.getElementById('legend');
+//for (var style in styles) {
+//  var name = "Truck available";//style.name;
+//  var icon = "http://www.google.com/icon.png";
+//  var div = document.createElement('div');
+//  div.innerHTML = '<img src="' + icon + '"> ' + name;
+//  legend.appendChild(div);
+//}
+
+
+  var marker = new google.maps.Marker({
+    position: new google.maps.LatLng(53.0, 12.1),
+    map: map,
+    icon: 'http://www.google.com/icon.png'
+  })//.setIcon('http://maps.google.com/mapfiles/ms/icons/yellow-dot.png');
+  // yellow, green, black, blue, red
+
+  var marker = new google.maps.Marker({
+    position: new google.maps.LatLng(66, 12.0),
+    map: map
+  });
+
+  var flightPlanCoordinates = [
+    new google.maps.LatLng(53, 12.1),
+    new google.maps.LatLng(53.5, 12.5),
+    new google.maps.LatLng(55, 11),
+    new google.maps.LatLng(60, 10),
+    new google.maps.LatLng(66, 12)
+  ];
+
+  var flightPath = new google.maps.Polyline({
+    path: flightPlanCoordinates,
+    geodesic: true,
+    strokeColor: '#0000FF',
+    strokeOpacity: 1.0,
+    strokeWeight: 2
+  });
+
+  flightPath.setMap(map);
+}
+
+google.maps.event.addDomListener(window, 'load', initialize);
+
+    </script>
+  </head>
+  <body>
+<!--<div id="legend"></div>-->
+
+    <div id="map-canvas"></div>
+  </body>
+</html>
+
+
